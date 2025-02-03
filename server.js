@@ -62,6 +62,11 @@ import fastify from 'fastify'
     return reply.send({ message: 'Task deleted successfully' })
   })
 
+  app.get('/', (request, reply) => {
+    const stream = fs.createReadStream('./index.html')
+    reply.type('text/html').send(stream)
+  })
+
   app.listen({ port: 3000 }, (err, address) => {
     if (err) {
       console.error(err)

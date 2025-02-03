@@ -78,7 +78,12 @@
           async deleteTask(id) {
             await fetch(`/api/tasks/${id}`, { method: 'DELETE' })
             this.tasks = this.tasks.filter(task => task.id !== id)
-          }
+          },
+
+					init() {
+            this.fetchTasks()
+          },
+
         }))
       })
     </script>
