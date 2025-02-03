@@ -1,6 +1,7 @@
 import fastify from 'fastify'
   import fs from 'fs'
 
+  const port = process.env.PORT || 3000;
   const app = fastify({ logger: true })
 
   let tasks = []
@@ -67,7 +68,7 @@ import fastify from 'fastify'
     reply.type('text/html').send(stream)
   })
 
-  app.listen({ port: 3000 }, (err, address) => {
+  app.listen({ port: port }, (err, address) => {
     if (err) {
       console.error(err)
       process.exit(1)
