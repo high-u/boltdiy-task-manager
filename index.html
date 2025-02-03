@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      .task-list {
+        list-style-type: none;
+        padding: 0;
+      }
+      .task-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+      .completed {
+        text-decoration: line-through;
+      }
+    </style>
+  </head>
+  <body x-data="taskManager">
+    <h1>Task Manager</h1>
+    <div>
+      <input type="text" x-model="newTaskContent" placeholder="Add a new task" />
+      <button @click="addTask">Add Task</button>
+    </div>
+    <ul class="task-list">
+      <template x-for="(task, index) in tasks" :key="task.id">
+        <li class="task-item">
+          <label>
+            <input type="checkbox" x-model="task.completed" @change="updateTask(task)" />
+            <span :class="{ completed: task.completed }" x-text="task.content"></span>
+          </label>
+          <button @click="deleteTask(task.id)">Delete</button>
+        </li>
+      </template>
+    </ul>
+
+    <script>
+      document.addEventListener('alpine:init', () => {
+        Alpine.data('taskManager', () => ({
+          tasks: [],
+          newTaskContent: '',
+
+          async fetchTasks() {
+            const response = await fetch('/api/tasks')
+            this.tasks = await response.json()
+          },
+
+          async addTask() {
+            if (this.newTaskContent.trim()) {
+              const response = await fetch('/api/tasks', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ content: this.newTaskContent })
+              })
+              const newTask = await response.json()
+              this.tasks.push(newTask)
+              this.newTaskContent = ''
+            }
+          },
+
+          async updateTask(task) {
+            await fetch(`/api/tasks/${task.id}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ completed: task.completed })
+            })
+          },
+
+          async deleteTask(id) {
+            await fetch(`/api/tasks/${id}`, { method: 'DELETE' })
+            this.tasks = this.tasks.filter(task => task.id !== id)
+          }
+        }))
+      })
+    </script>
+  </body>
+</html>
