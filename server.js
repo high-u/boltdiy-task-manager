@@ -68,7 +68,7 @@ import fastify from 'fastify'
     reply.type('text/html').send(stream)
   })
 
-  app.listen({ port: port }, (err, address) => {
+  app.listen({ port: port, host: '0.0.0.0' }, (err, address) => {
     if (err) {
       console.error(err)
       process.exit(1)
