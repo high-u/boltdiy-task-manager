@@ -6,11 +6,17 @@
     <title>Task Manager</title>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
-      body {
-        background: #ccc fixed no-repeat center center url("https://picsum.photos/640/640?grayscale&blur");
+      html {
+        background: fixed no-repeat center center url("https://picsum.photos/640/640?grayscale&blur");
         background-size: cover;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+      }
+      body {
         font-family: Arial, sans-serif;
-        padding: 16rem;
+        padding: 8rem;
         margin: 0;
       }
       .task-list {
@@ -27,7 +33,6 @@
         text-decoration: line-through;
       }
     </style>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picnic">
   </head>
   <body x-data="taskManager">
     <h1>Task Manager</h1>
@@ -42,7 +47,7 @@
             <input type="checkbox" x-model="task.completed" @change="updateTask(task)" />
             <span :class="{ completed: task.completed }" x-text="task.content"></span>
           </label>
-          <button @click="deleteTask(task.id)" class="warning">Delete</button>
+          <button @click="deleteTask(task.id)">Delete</button>
         </li>
       </template>
     </ul>
