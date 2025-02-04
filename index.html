@@ -42,7 +42,7 @@
             <input type="checkbox" x-model="task.completed" @change="updateTask(task)" />
             <span :class="{ completed: task.completed }" x-text="task.content"></span>
           </label>
-          <button @click="deleteTask(task.id)">Delete</button>
+          <button @click="deleteTask(task.id)" class="warning">Delete</button>
         </li>
       </template>
     </ul>
